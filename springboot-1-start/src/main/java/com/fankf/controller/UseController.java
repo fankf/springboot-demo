@@ -4,9 +4,7 @@ import com.fankf.bean.User;
 import com.fankf.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,13 +13,12 @@ import java.util.List;
  * @Date 2019-06-21 19:46:24
  * @Describe 基本CRUD
  */
-@Controller
-@RequestMapping(value = "/user")
+@RestController
 public class UseController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("add")
+    @RequestMapping(value = "add",method = RequestMethod.POST)
     public String addUseInfo(@RequestBody User user) {
         int i = userService.addUserInfo(user);
         if (i > 0) {
@@ -30,7 +27,7 @@ public class UseController {
         return "failure";
     }
 
-    @RequestMapping("delete")
+    @RequestMapping(value = "delete",method = RequestMethod.GET)
     public String deleteUseInfo(@RequestParam(value = "userId") String userId) {
         int i = userService.deleteUserInfo(userId);
         if (i > 0) {
@@ -39,19 +36,25 @@ public class UseController {
         return "failure";
     }
 
-    @RequestMapping("update")
-    public User updateUseInfo(@RequestBody User user) {
+    @RequestMapping(value = "update",method = RequestMethod.POST)
+    public String updateUseInfo(@RequestBody User user) {
         User user1 = userService.updateUserInfo(user);
-        return user1;
+        if(user1 == null){
+            return "未查询到数据！";
+        }
+        return user1.toString();
     }
 
-    @RequestMapping("query")
-    public User queryUseInfo(String userId) {
+    @RequestMapping(value = "query",method = RequestMethod.POST)
+    public String queryUseInfo(String userId) {
         User user = userService.queryUserInfo(userId);
-        return user;
+        if( user == null ){
+            return "未查询到数据！";
+        }
+        return user.toString();
     }
 
-    @RequestMapping("queryAll")
+    @RequestMapping(value = "queryAll",method = RequestMethod.GET)
     public List<User> queryAllUseInfo() {
         List<User> users = userService.queryAllUserInfo();
         return users;

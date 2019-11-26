@@ -56,3 +56,6 @@ fabric.properties
 *.iml
 */*.iml
 .idea/*.*
+ABAP_AS_WITH_POOL.jcoDestination
+dev_jco_rfc.trc
+*/.idea/*
